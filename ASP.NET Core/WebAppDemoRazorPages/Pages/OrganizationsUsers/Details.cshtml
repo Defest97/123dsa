@@ -1,0 +1,43 @@
+﻿@page
+@model WebAppDemoRazorPages.Pages.OrganizationsUsers.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>OrganizationUser</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrganizationUser.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrganizationUser.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrganizationUser.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrganizationUser.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrganizationUser.Organization)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrganizationUser.Organization.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrganizationUser.AccessLevel)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrganizationUser.AccessLevel)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="/OrganizationsUsers/CreateEdit" asp-route-UserId="@Model.OrganizationUser?.Id" asp-route-OrganizationId="@Model.OrganizationId" asp-route-edit="@true">Edit</a> |
+    <a asp-page="/Organizations/Details" asp-route-id="@Model.OrganizationId">Back to List</a>
+</div>

@@ -1,0 +1,46 @@
+﻿@page
+@using DemoClients;
+@model WebAppDemoRazorPages.Pages.OrganizationsUsers.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    var AccessLevel = Html.GetEnumSelectList<UserAccess>();
+}
+
+<h1>@ViewData["CreatEdit"] User for Organization @ViewData["OrganizationName"]</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OrganizationUser.OrganizationId"/>
+            <input type="hidden" asp-for="OrganizationUser.Id" />
+            <div class="form-group">
+                <label asp-for="OrganizationUser.Name" class="control-label"></label>
+                <input asp-for="OrganizationUser.Name" class="form-control" />
+                <span asp-validation-for="OrganizationUser.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrganizationUser.Code" class="control-label"></label>
+                <input asp-for="OrganizationUser.Code" class="form-control" />
+                <span asp-validation-for="OrganizationUser.Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrganizationUser.AccessLevel" class="control-label"></label>
+                <select asp-for="OrganizationUser.AccessLevel" class="form-control" asp-items="@AccessLevel"></select>
+                <span asp-validation-for="OrganizationUser.AccessLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@ViewData["CreatEdit"]" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
