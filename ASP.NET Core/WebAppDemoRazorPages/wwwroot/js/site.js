@@ -1,4 +1,14 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿const fieldName = document.querySelector('#fieldName');
+const filter = document.querySelector('#filter');
+fieldName.addEventListener('click', () => {
+    filter.focus();
+})
+function goToPage() {
+    var Page = document.getElementById('Page').value;
+    var PageSize = document.getElementById('PageSize').value;
+    // Ви можете використовувати skipValue для побудови URL
+    var url = `?skip=${(Page-1)*PageSize}`;
 
-// Write your JavaScript code.
+    // Перенаправити на новий URL
+    window.location.href = url;
+}

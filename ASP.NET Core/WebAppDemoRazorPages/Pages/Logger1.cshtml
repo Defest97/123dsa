@@ -1,0 +1,45 @@
+﻿@page
+@model WebAppDemoRazorPages.Pages.Logger1Model
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Log[0].Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Log[0].OS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Log[0].Browser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Log[0].Ip)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Log[0].Path)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Log)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Browser)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ip)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Path)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

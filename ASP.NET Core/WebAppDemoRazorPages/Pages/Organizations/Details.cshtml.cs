@@ -19,8 +19,9 @@ namespace WebAppDemoRazorPages.Pages.Organizations
             _context = context;
         }
 
-      public Organization Organization { get; set; } = default!; 
-      public List<OrganizationUser> OrganizationUsers { get; set; } = default!; 
+        [BindProperty]
+        public Organization Organization { get; set; } = default!;
+        public List<OrganizationUser> OrganizationUsers { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,17 +31,31 @@ namespace WebAppDemoRazorPages.Pages.Organizations
             }
 
             var organization = await _context.Organizations.FirstOrDefaultAsync(m => m.Id == id);
-            var organizationUsers = await _context.OrganizationUsers.Where(user=> user.OrganizationId==id).ToListAsync();
+            var organizationUsers = await _context.OrganizationUsers.Where(user => user.OrganizationId == id).ToListAsync();
             if (organization == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Organization = organization;
                 OrganizationUsers = organizationUsers;
             }
             return Page();
+        }
+        [BindProperty]
+        public OrganizationUser OrganizationUserDelete { get; set; } = default!;
+        public async Task OnPostDeleteAsync(int? id)
+        {
+            var organizationUser = await _context.OrganizationUsers.FindAsync(id);
+
+            if (organizationUser != null)
+            {
+                OrganizationUserDelete = organizationUser;
+                _context.OrganizationUsers.Remove(OrganizationUserDelete);
+                await _context.SaveChangesAsync();
+            }
+            OrganizationUsers = await _context.OrganizationUsers.ToListAsync(); ;
         }
     }
 }

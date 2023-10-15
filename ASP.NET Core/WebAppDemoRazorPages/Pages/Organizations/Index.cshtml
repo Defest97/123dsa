@@ -6,52 +6,141 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="container text-center">
+    <h1 class="row">Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<form asp-page-handler="filter">
-    <p>
+    <form asp-page-handler="filter" class="row" asp-route-sort="Model.Sort">
+        <a class="btn btn-primary col-12 col-xl-2 mt-2" asp-page="Create">Create New</a>
+        <span id="fieldName" class="col-2 col-md-4 col-xl-2 py-1 border rounded-2 mt-2 border-primary">Filter:</span>
+        <input id="filter" class="col-10 col-md-8 col-xl-4 mt-2" type="text" name="filter" value="@ViewData["Filter"]" />
+        <input class="col-12 col-md-6 col-lg-6 col-xl-2 mt-2 btn btn-primary" type="submit" value="Filter" />
+        <a class="col-12 col-md-6 col-lg-6 col-xl-2 btn mt-2 btn-outline-primary" asp-controller="Organizations" asp-action="Index">Clean</a>
+    </form>
+    <div class="row">
+        <table class="table">
+            @{       
+                var currentSort = Model.Sort;
+                string arrow = currentSort == string.Empty ? "" : currentSort.Contains("Desending") ? "&#8593;" : "&#8595;";
+                string nameActive = currentSort.Contains("Name") ? "active" : "";
+                string fullNameActive = currentSort.Contains("Fullname") ? "active" : "";
+                string createdActive = currentSort.Contains("Created") ? "active" : "";
+            }
+            <thead>
+                <tr>
+                    <th>
+                        <a class="btn btn-outline-primary @(nameActive)" asp-page="" asp-route-filter="@Model.Filter" asp-route-sort="@(currentSort == "Name" ? "NameDesending" : currentSort == "NameDesending" ? string.Empty : "Name")">@Html.DisplayNameFor(model => model.Organization[0].Name) @(nameActive != "" ? Html.Raw(arrow) : "")</a>
+                    </th>
+                    <th>
+                        <a class="btn btn-outline-primary @(fullNameActive)" asp-page="" asp-route-filter="@Model.Filter" asp-route-sort="@(currentSort == "Fullname" ? "FullnameDesending" : currentSort == "FullnameDesending" ? string.Empty : "Fullname")">@Html.DisplayNameFor(model => model.Organization[0].FullName) @(fullNameActive != "" ? Html.Raw(arrow) : "")</a>
+                    </th>
+                    <th>
+                        <a class="btn btn-outline-primary @(createdActive)" asp-page="" asp-route-filter="@Model.Filter" asp-route-sort="@(currentSort == "Created" ? "CreatedDesending" : currentSort == "CreatedDesending" ? string.Empty : "Created")">@Html.DisplayNameFor(model => model.Organization[0].Created) @(createdActive != "" ? Html.Raw(arrow) : "")</a>
+                    </th>
+                    <th></th>
+                </tr>
+                </thead>
+            <tbody>
+                @foreach (var item in Model.Organization)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Created)
+                        </td>
+                        <td>
+                            <div class="row">
+                                <a class="btn btn-secondary col-md-4" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                                <a class="btn btn-info col-md-4" asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                                <button type="button" class="btn btn-danger col-md-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop@(item.Id)">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="modal fade" id="staticBackdrop@(item.Id)" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Delete?</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-2">
+                                            @Html.DisplayNameFor(model => model.Organization[0].Name)
+                                        </dt>
+                                        <dd class="col-sm-10">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </dd>
+                                        <dt class="col-sm-2">
+                                            @Html.DisplayNameFor(model => model.Organization[0].FullName)
+                                        </dt>
+                                        <dd class="col-sm-10">
+                                            @Html.DisplayFor(modelItem => item.FullName)
+                                        </dd>
+                                        <dt class="col-sm-2">
+                                            @Html.DisplayNameFor(model => model.Organization[0].Created)
+                                        </dt>
+                                        <dd class="col-sm-10">
+                                            @Html.DisplayFor(modelItem => item.Created)
+                                        </dd>
+                                    </dl>
 
-        <span id="fieldName">Name:</span><input type="text" name="filter" value="@ViewData["Filter"]" />
-        <input type="submit" value="Filter" />
-        <button><a asp-controller="Organizations" asp-action="Index"></a>Clean</button>
-    </p>
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Organization[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Organization[0].FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Organization[0].Created)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Organization) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                                    <form method="post" asp-page-handler="delete" asp-route-id="@item.Id">
+                                        <input type="hidden" asp-for="@item.Id" />
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                                        <input type="submit" value="Delete" class="btn btn-danger" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </tbody>
+        </table>
+        <partial name="_PaginationPartial" model="Model"></partial>
+        @*@{
+            string previous = Model.Skip == 0 ? "disabled" : "";
+            int pages = Model.CountItems / Model.PageSize + (Model.CountItems % Model.PageSize > 0 ? 1 : 0);
+            string next = Model.Skip == (pages - 1) ? "disabled" : "";
+        }
+        <nav aria-label="...">
+            <ul class="pagination">
+                @{
+                    int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.PageSize+1;
+
+                    if (pages > 1)
+                    {
+                        <li class="page-item @previous">
+                            <a class="page-link" asp-page="" asp-route-skip="@(Model.Skip-Model.PageSize)" asp-route-sort="@Model.Sort" asp-route-filter="@Model.Filter">Previous</a>
+                        </li>
+
+                        for (int i = 1; i < pages+1; i++)
+                        {
+                            if (currentPage == i)
+                            {
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">@i</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item ">
+                                    <a class="page-link" asp-page="" asp-route-skip="@((i-1)*Model.PageSize)" asp-route-sort="@Model.Sort" asp-route-filter="@Model.Filter">@i</a>
+                                </li>
+                            }
+                        }
+                        <li class="page-item @next">
+                            <a class="page-link" asp-page="" asp-route-skip="@(currentPage*Model.PageSize)" asp-route-sort="@Model.Sort" asp-route-filter="@Model.Filter">Next</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </nav>*@
+    </div>
+</div>

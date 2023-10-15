@@ -38,6 +38,6 @@
     </dl>
 </div>
 <div>
-    <a asp-page="/OrganizationsUsers/CreateEdit" asp-route-UserId="@Model.OrganizationUser?.Id" asp-route-OrganizationId="@Model.OrganizationId" asp-route-edit="@true">Edit</a> |
-    <a asp-page="/Organizations/Details" asp-route-id="@Model.OrganizationId">Back to List</a>
+    <a class="btn btn-secondary" asp-page="/OrganizationsUsers/CreateEdit" asp-route-UserId="@Model.OrganizationUser?.Id" asp-route-OrganizationId="@Model.OrganizationId" asp-route-edit="@true">Edit</a>
+    <a class ="btn btn-outline-secondary" asp-page="/Organizations/Details" asp-route-id="@Model.OrganizationId">Back to List</a>
 </div>
